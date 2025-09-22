@@ -33,24 +33,18 @@ project(main C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# ======================= FETCHCONTENT PARA SSD1306 =======================
-# 1. Inclui o módulo necessário para buscar dependências externas
+# Inclui o módulo necessário para buscar dependências externas
 include(FetchContent)
 
-# 2. Declara a dependência: de onde baixar e qual versão usar
+#Declara a dependência
 FetchContent_Declare(
     pico_ssd1306
     GIT_REPOSITORY https://github.com/daschr/pico-ssd1306.git
-    # Para garantir builds consistentes, o ideal é usar um commit hash específico.
-    # Se preferir a última versão, pode usar GIT_TAG main ou master.
     GIT_TAG         main
 )
 
-# 3. Efetivamente baixa o código da dependência para o diretório de build
 FetchContent_MakeAvailable(pico_ssd1306)
 
-# 4. Como a lib não tem um CMakeLists.txt, criamos uma biblioteca para ela
-#    Isso nos permite tratá-la como um componente modular do CMake
 add_library(ssd1306_lib INTERFACE)
 target_include_directories(ssd1306_lib INTERFACE ${pico_ssd1306_SOURCE_DIR})
 target_sources(ssd1306_lib INTERFACE ${pico_ssd1306_SOURCE_DIR}/ssd1306.c)
