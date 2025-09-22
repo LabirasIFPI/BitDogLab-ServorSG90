@@ -36,7 +36,10 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 file(GLOB SRC_FILES "src/*.c")
 
-add_executable(main ${SRC_FILES})
+add_executable(main 
+    ${SRC_FILES}
+    lib/pico-ssd1306/ssd1306.c
+)
 
 pico_set_program_name(main "main")
 pico_set_program_version(main "0.1")
@@ -45,13 +48,11 @@ pico_set_program_version(main "0.1")
 pico_enable_stdio_uart(main 0)
 pico_enable_stdio_usb(main 1)
 
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/lib/pico-ssd1306")
-
 
 # Add the standard library to the build
 target_link_libraries(main
     pico_stdlib
-    pico-ssd1306
+    hardware_i2c
     hardware_pwm
 )
 
